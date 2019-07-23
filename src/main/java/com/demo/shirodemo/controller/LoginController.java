@@ -19,6 +19,7 @@ public class LoginController {
     public String login(){
         String userName = "admin";
         Users user = userService.getUserByName(userName);
+        System.out.println(user);
         return "login";
     }
 }
