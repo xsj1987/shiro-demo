@@ -12,11 +12,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@Configuration
+//@Configuration
 public class ShiroConfig {
 
     /**
@@ -73,6 +72,7 @@ public class ShiroConfig {
      */
     public Map<String, Filter> initFilters(){
         Map<String, Filter> map = new LinkedHashMap<>();
+        // 只能通过new注入，不能通过@Autowired注入
         map.put("my", new MyAccessControllerFilter());
         return map;
     }
@@ -84,9 +84,9 @@ public class ShiroConfig {
      */
     public Map<String, String> initFilterChain(){
         Map<String, String> map = new LinkedHashMap<>();
-        map.put("/login", "my");
+        map.put("/js", "my");
         map.put("/css", "anon");
-        map.put("/**", "authc");
+        map.put("/**", "anon");
         return map;
     }
 
