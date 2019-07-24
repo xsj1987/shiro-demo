@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.shirodemo.dao.RoleMapper">
+
+    <resultMap id="roleResultMap" type="com.demo.shirodemo.entity.Role">
+        <result column="id" property="id" jdbcType="DECIMAL"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <select id="selectRoleByUserName" parameterType="java.lang.String" resultMap="roleResultMap">
+        SELECT * FROM auth_role t WHERE t.ID IN (SELECT a.ROLE_ID FROM auth_user_role a WHERE a.USER_ID=#{userName})
+    </select>
+
+</mapper>

@@ -38,14 +38,15 @@ public class MyAccessControllerFilter extends AccessControlFilter {
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
         log.info("开始执行onAccessDenied方法");
         Subject subject= SecurityUtils.getSubject();
-        String userName = (String)servletRequest.getAttribute("name");
-        String pwd = (String)servletRequest.getAttribute("pwd");
+        String userName = servletRequest.getParameter("name");
+        String pwd = servletRequest.getParameter("pwd");
         AuthenticationToken token = new PasswordToken(userName, pwd);
         try{
             subject.login(token);
             return true;
         }catch (Exception e){
-            log.error("登录失败");
+            e.printStackTrace();
+            log.error("登录失败:" + e.getMessage());
             return false;
         }
     }

@@ -15,8 +15,18 @@ import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-//@Configuration
+@Configuration
 public class ShiroConfig {
+
+    /**
+     * 单独提取出来实例化，然后再set到securityManager中
+     * 防止在Realm中无法注入Service
+     * @return
+     */
+    @Bean
+    public PasswordRealm setPasswordRealm(){
+        return new PasswordRealm();
+    }
 
     /**
      * 安全管理器
@@ -24,11 +34,12 @@ public class ShiroConfig {
      * setAuthenticator：Realm管理器，主要用来管理多个Realm的验证规则，单个不用设置
      * @return
      */
+    @Bean
     public SecurityManager securityManager(){
         DefaultSecurityManager securityManager = new DefaultWebSecurityManager();
         // 该设置要在Realm设置之前，否则会报找不到Realm异常
         securityManager.setAuthenticator(modularRealmAuthenticator());
-        securityManager.setRealm(new PasswordRealm());
+        securityManager.setRealm(setPasswordRealm());
         return securityManager;
     }
 
@@ -84,9 +95,9 @@ public class ShiroConfig {
      */
     public Map<String, String> initFilterChain(){
         Map<String, String> map = new LinkedHashMap<>();
-        map.put("/js", "my");
+        map.put("/js", "anon");
         map.put("/css", "anon");
-        map.put("/**", "anon");
+        map.put("/**", "my");
         return map;
     }
 
